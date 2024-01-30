@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Random;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 
 public class App extends Application {
     private List<String> conejosImagenes = new ArrayList<>(Arrays.asList(
@@ -35,17 +37,22 @@ public class App extends Application {
     private VBox imagenesVBox;
     private HBox filaActual;
     private VBox root;
+    private Stage stage;
     private HBox botonesBox;
     private Button siguienteButton, reiniciarButton;
     private ScrollPane scrollPane;
-    private Label numeroConejosLabel;
+    private TextField userInput;
+    private Label numeroConejosLabel,nSucesion;
 
     public static void main(String[] args) {
         launch(args);
     }
-
     @Override
-    public void start(Stage primaryStage) {
+        public void start(Stage primaryStage) {
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            menuPrincipal.start(primaryStage);
+        }
+        public void startJuego(Stage primaryStage){
         primaryStage.setTitle("Los Conejos de Fibonacci");
         primaryStage.setMaximized(true);  // Abrir la ventana maximizada
         
@@ -64,12 +71,34 @@ public class App extends Application {
                 reiniciar();
             }
         });
-
+        // Botón para generar conejos según la entrada del usuario
+        Button generarButton = new Button("Generar Conejos");
+        generarButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                generarConejosSegunInput();
+                userInput.clear();
+                userInput.setPromptText("Ingrese un número (1-10)");
+            }
+        });
+        Button salirButton = new Button("Salir");
+        salirButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                volverAlMenu();
+                
+            }
+        });
+        // Crear campo de entrada para el usuario
+        userInput = new TextField();
+        userInput.setPromptText("Ingrese un número (1-10)");
+        userInput.setMaxWidth(150);
         inicializarConejos();
         botonesBox = new HBox(30);
         botonesBox.setAlignment(Pos.CENTER);
         numeroConejosLabel = new Label("Número de Conejos: " + conejoImageViews.size());
-        botonesBox.getChildren().addAll(siguienteButton, reiniciarButton, numeroConejosLabel);
+        nSucesion = new Label("Sucesión #1");
+        botonesBox.getChildren().addAll(siguienteButton, reiniciarButton, numeroConejosLabel,nSucesion,userInput,generarButton,salirButton);
 
         scrollPane = new ScrollPane();
         imagenesVBox.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
@@ -159,23 +188,29 @@ public class App extends Application {
                 imagenesVBox.getChildren().add(filaActual);
             }
         }
-
+        nSucesion.setText("Sucesión #"+(index-1));
         numeroConejosLabel.setText("Número de Conejos: " + conejoImageViews.size());
     }
 
     private void reiniciar() {
-        // Cerrar la ventana actual
-        Stage stage = (Stage) root.getScene().getWindow();
-        stage.close();
+        conejoImageViews.clear();
+        imagenesVBox.getChildren().clear();
+        filaActual = new HBox(10);
+        filaActual.setAlignment(Pos.CENTER);
 
-        // Crear una nueva instancia de App y lanzarla en un nuevo Stage
-        Platform.runLater(() -> {
-            try {
-                new App().start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        // Establecer el fondo de HBox como transparente
+        filaActual.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
+
+        Random random = new Random();
+        String rutaAleatoria = conejosImagenes.get(random.nextInt(conejosImagenes.size()));
+        conejoImageViews.add(new ImageView(new Image(rutaAleatoria)));
+        conejoImageViews.get(0).setFitWidth(150);
+        conejoImageViews.get(0).setFitHeight(150);
+        filaActual.getChildren().add(conejoImageViews.get(0));
+        imagenesVBox.getChildren().add(filaActual);
+        index = 2;
+        nSucesion.setText("Sucesión #"+(index-1));
+        numeroConejosLabel.setText("Número de Conejos: " + conejoImageViews.size());
     }
 
     public int fibonacci(int n) {
@@ -184,6 +219,42 @@ public class App extends Application {
         } else {
             return fibonacci(n - 1) + fibonacci(n - 2);
         }
+    }
+    public void generarConejosSegunInput(){
+        try {
+            int inputNumero = Integer.parseInt(userInput.getText());
+
+            if (inputNumero >= 1 && inputNumero <= 10) {
+                reiniciar();
+                if(inputNumero>1){
+                    index = inputNumero;
+                    siguiente(); // Esto reiniciará y generará conejos según el nuevo índice ingresado.
+                }
+            } else {
+                mostrarAlerta("Por favor, ingrese un número entre 1 y 10.");
+            }
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Por favor, ingrese un número válido.");
+        }
+        
+    }
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+    private void volverAlMenu() {
+        Platform.runLater(() -> {
+            // Crea una nueva instancia del MainMenu y muestra la ventana maximizada
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            Stage primaryStageMenu = new Stage();
+            menuPrincipal.start(primaryStageMenu);
+            primaryStageMenu.setMaximized(true);
+            Stage stageActual = (Stage) siguienteButton.getScene().getWindow();
+            stageActual.close();
+        });
     }
 }
 
