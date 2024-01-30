@@ -75,7 +75,8 @@ public class MenuPrincipal extends Application {
 
         facilButton.setOnAction(event -> {
             primaryStage.hide();
-            App game = new App();
+            ModoCurioso game = new ModoCurioso();
+            game.start(primaryStage);
         });
         ilimitadoBtn.setOnAction(event -> {
             primaryStage.hide();
