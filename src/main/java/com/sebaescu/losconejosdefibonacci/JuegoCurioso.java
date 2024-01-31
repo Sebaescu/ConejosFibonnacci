@@ -5,6 +5,7 @@
 package com.sebaescu.losconejosdefibonacci;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,17 +15,17 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javafx.application.Platform;
 
 public class JuegoCurioso extends Application {
     private List<String> imagenesJuegoList;
-    private int currentIndex = 1, nCorrectas =0;
+    private int currentIndex = 1, nCorrectas = 0;
     private ImageView imageView;
     private ToggleGroup toggleGroup;
     private Label labelPregunta;
@@ -39,42 +40,43 @@ public class JuegoCurioso extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Juego Curioso");
 
-        // VBox principal
+        // Configuración de la interfaz de usuario
+        StackPane root = new StackPane();
+        root.setStyle("-fx-background-image: url('com/sebaescu/losconejosdefibonacci/fondo3.png'); "
+                + "-fx-background-size: cover;");
+
         vbox = new VBox(20);
-        vbox.setAlignment(Pos.CENTER);
+        vbox.setAlignment(Pos.BOTTOM_CENTER);
 
         // Inicializar lista de imágenes de juego
         imagenesJuegoList = new ArrayList<>();
-        Collections.addAll(imagenesJuegoList, 
-        "com/sebaescu/losconejosdefibonacci/Juego1.png",
-        "com/sebaescu/losconejosdefibonacci/Juego1B.png",
-        "com/sebaescu/losconejosdefibonacci/Juego2.png",
-        "com/sebaescu/losconejosdefibonacci/Juego2B.png",
-        "com/sebaescu/losconejosdefibonacci/Juego3.png",
-        "com/sebaescu/losconejosdefibonacci/Juego3B.png",
-        "com/sebaescu/losconejosdefibonacci/Juego4.png",
-        "com/sebaescu/losconejosdefibonacci/Juego4B.png",
-        "com/sebaescu/losconejosdefibonacci/Juego5.png",
-        "com/sebaescu/losconejosdefibonacci/Juego6.png",
-        "com/sebaescu/losconejosdefibonacci/Juego7.png",
-        "com/sebaescu/losconejosdefibonacci/Juego8.png",
-        "com/sebaescu/losconejosdefibonacci/Juego9.png",
-        "com/sebaescu/losconejosdefibonacci/Juego10.png");
+        Collections.addAll(imagenesJuegoList,
+                "com/sebaescu/losconejosdefibonacci/Juego1.png",
+                "com/sebaescu/losconejosdefibonacci/Juego1B.png",
+                "com/sebaescu/losconejosdefibonacci/Juego2.png",
+                "com/sebaescu/losconejosdefibonacci/Juego2B.png",
+                "com/sebaescu/losconejosdefibonacci/Juego3.png",
+                "com/sebaescu/losconejosdefibonacci/Juego3B.png",
+                "com/sebaescu/losconejosdefibonacci/Juego4.png",
+                "com/sebaescu/losconejosdefibonacci/Juego4B.png",
+                "com/sebaescu/losconejosdefibonacci/Juego5.png",
+                "com/sebaescu/losconejosdefibonacci/Juego6.png",
+                "com/sebaescu/losconejosdefibonacci/Juego7.png",
+                "com/sebaescu/losconejosdefibonacci/Juego8.png",
+                "com/sebaescu/losconejosdefibonacci/Juego9.png",
+                "com/sebaescu/losconejosdefibonacci/Juego10.png");
         Collections.shuffle(imagenesJuegoList);
-
-         // VBox principal
-        vbox = new VBox(20);
-        vbox.setAlignment(Pos.CENTER);
 
         // Pregunta
         labelPregunta = new Label("¿Contiene esta imagen la secuencia de Fibonacci?");
+        labelPregunta.setStyle("-fx-font-size: 36; -fx-text-fill: #f5ebb0;");
         vbox.getChildren().add(labelPregunta);
 
         // Imagen
         currentIndex = 1;
         imageView = new ImageView(new Image(getImagePath()));
-        imageView.setFitWidth(200);
-        imageView.setFitHeight(200);
+        imageView.setFitWidth(350);
+        imageView.setFitHeight(350);
         vbox.getChildren().add(imageView);
 
         // ToggleGroup para los radio buttons
@@ -82,9 +84,11 @@ public class JuegoCurioso extends Application {
 
         // RadioButtons
         RadioButton radioButtonSi = new RadioButton("Sí");
+        radioButtonSi.setStyle("-fx-font-size: 24; -fx-text-fill: #f5ebb0; -fx-padding: 10;");
         radioButtonSi.setToggleGroup(toggleGroup);
 
         RadioButton radioButtonNo = new RadioButton("No");
+        radioButtonNo.setStyle("-fx-font-size: 24; -fx-text-fill: #f5ebb0; -fx-padding: 10;");
         radioButtonNo.setToggleGroup(toggleGroup);
 
         // HBox para los radio buttons
@@ -96,17 +100,20 @@ public class JuegoCurioso extends Application {
         botones.setAlignment(Pos.CENTER);
         buttonSiguiente = new Button("Siguiente");
         buttonSiguiente.setOnAction(e -> siguientePregunta());
+        buttonSiguiente.setStyle("-fx-min-height: 60; -fx-background-color: #dad061; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
         Button salirButton = new Button("Salir");
         salirButton.setOnAction(event -> {
             volverAlMenu();
         });
-        botones.getChildren().addAll(buttonSiguiente,salirButton);
+        salirButton.setStyle("-fx-min-height: 70; -fx-background-color: #edab8b; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
+        botones.getChildren().addAll(buttonSiguiente, salirButton);
         vbox.getChildren().add(botones);
 
-        // Mostrar la primera pregunta
-        mostrarPregunta();
+        // Agregar VBox al StackPane
+        root.getChildren().add(vbox);
 
-        Scene scene = new Scene(vbox, 400, 400);
+        // Configuración de la escena y visualización
+        Scene scene = new Scene(root, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -118,13 +125,13 @@ public class JuegoCurioso extends Application {
     }
 
     private String getImagePath() {
-        return "com/sebaescu/losconejosdefibonacci/Juego" + currentIndex + ".png";
+        return imagenesJuegoList.get(currentIndex - 1);
     }
 
     private void siguientePregunta() {
         if (toggleGroup.getSelectedToggle() == null)
             return;
-        else{
+        else {
             // Verificar la respuesta y avanzar a la siguiente pregunta
             String respuestaCorrecta = getRespuestaCorrecta();
             RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
@@ -132,9 +139,9 @@ public class JuegoCurioso extends Application {
 
             if (respuestaCorrecta.equals(respuestaSeleccionada)) {
                 nCorrectas++;
-            } 
-            if(currentIndex == 10){
-                labelPregunta.setText("Tuviste "+nCorrectas+" preguntas correctas!");
+            }
+            if (currentIndex == 10) {
+                labelPregunta.setText("Tuviste " + nCorrectas + " preguntas correctas!");
                 buttonSiguiente.setDisable(true);
                 return;
             }
@@ -144,19 +151,21 @@ public class JuegoCurioso extends Application {
             }
         }
     }
+
     private String getRespuestaCorrecta() {
         String imagePath = imageView.getImage().getUrl();
         System.out.println(imagePath);
         switch (imagePath) {
-            case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego1.png":
-            case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego4.png":
-            case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego8.png":
-            case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego10.png":
+            case "com/sebaescu/losconejosdefibonacci/Juego1.png":
+            case "com/sebaescu/losconejosdefibonacci/Juego4.png":
+            case "com/sebaescu/losconejosdefibonacci/Juego8.png":
+            case "com/sebaescu/losconejosdefibonacci/Juego10.png":
                 return "Sí";
             default:
                 return "No";
         }
     }
+
     private void volverAlMenu() {
         Platform.runLater(() -> {
             // Crea una nueva instancia del MainMenu y muestra la ventana maximizada
@@ -169,3 +178,4 @@ public class JuegoCurioso extends Application {
         });
     }
 }
+

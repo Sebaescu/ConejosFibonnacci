@@ -89,15 +89,24 @@ public class App extends Application {
                 
             }
         });
-        // Crear campo de entrada para el usuario
+        siguienteButton.setStyle("-fx-min-height: 70; -fx-background-color: #dad061; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
+        reiniciarButton.setStyle("-fx-min-height: 70; -fx-background-color: #f5ebb0; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
+        generarButton.setStyle("-fx-min-height: 70; -fx-background-color: #acc59d; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
+        salirButton.setStyle("-fx-min-height: 70; -fx-background-color: #edab8b; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
+
         userInput = new TextField();
         userInput.setPromptText("Ingrese un número (1-10)");
-        userInput.setMaxWidth(150);
+        userInput.setMaxWidth(250);
+        userInput.setStyle("-fx-min-height: 70; -fx-background-color: #f5ebb0; -fx-font-size: 18; -fx-text-fill: #09456c;-fx-prompt-text-fill: #2d6073");
+
         inicializarConejos();
         botonesBox = new HBox(30);
         botonesBox.setAlignment(Pos.CENTER);
         numeroConejosLabel = new Label("Número de Conejos: " + conejoImageViews.size());
         nSucesion = new Label("Sucesión #1");
+        numeroConejosLabel.setStyle("-fx-font-size: 36; -fx-text-fill: #2d6073;");
+        nSucesion.setStyle("-fx-font-size: 36; -fx-text-fill: #2d6073;");
+
         botonesBox.getChildren().addAll(siguienteButton, reiniciarButton, numeroConejosLabel,nSucesion,userInput,generarButton,salirButton);
 
         scrollPane = new ScrollPane();
@@ -121,7 +130,6 @@ public class App extends Application {
 
         // Establecer el fondo de StackPane como transparente
         stackPane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
-
         root = new VBox(10);
         root.setAlignment(Pos.CENTER);
         root.getChildren().add(stackPane);
@@ -170,6 +178,7 @@ public class App extends Application {
             ImageView nuevoConejo = new ImageView(new Image(rutaAleatoria));
             nuevoConejo.setFitWidth(150);
             nuevoConejo.setFitHeight(150);
+            nuevoConejo.setStyle("-fx-background-color: transparent;");
 
             conejoImageViews.add(nuevoConejo);
             // Establecer el fondo de HBox como transparente
@@ -256,6 +265,7 @@ public class App extends Application {
             stageActual.close();
         });
     }
+    
 }
 
 
