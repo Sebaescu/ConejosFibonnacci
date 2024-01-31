@@ -85,7 +85,8 @@ public class MenuPrincipal extends Application {
         });
         dificilButton.setOnAction(event -> {
             primaryStage.hide();
-            App game = new App();
+            ModoEducativo game = new ModoEducativo();
+            game.start(primaryStage);
         });
         closeButton.setOnAction(event -> primaryStage.close());
 

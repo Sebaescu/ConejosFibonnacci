@@ -127,17 +127,12 @@ public class JuegoCurioso extends Application {
         else{
             // Verificar la respuesta y avanzar a la siguiente pregunta
             String respuestaCorrecta = getRespuestaCorrecta();
-            System.out.println(respuestaCorrecta);
             RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
             String respuestaSeleccionada = selectedRadioButton.getText();
 
             if (respuestaCorrecta.equals(respuestaSeleccionada)) {
-                System.out.println("¡Respuesta Correcta!");
                 nCorrectas++;
-            } else {
-                System.out.println("Respuesta Incorrecta");
-                
-            }
+            } 
             if(currentIndex == 10){
                 labelPregunta.setText("Tuviste "+nCorrectas+" preguntas correctas!");
                 buttonSiguiente.setDisable(true);
@@ -154,9 +149,9 @@ public class JuegoCurioso extends Application {
         System.out.println(imagePath);
         switch (imagePath) {
             case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego1.png":
-            case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego2.png":
-            case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego3.png":
             case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego4.png":
+            case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego8.png":
+            case "file:/C:/Users/Sebastian/Documents/NetBeansProjects/LosConejosDeFibonacci/target/classes/com/sebaescu/losconejosdefibonacci/Juego10.png":
                 return "Sí";
             default:
                 return "No";
