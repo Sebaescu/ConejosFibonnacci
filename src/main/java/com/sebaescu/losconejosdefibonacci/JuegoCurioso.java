@@ -52,20 +52,20 @@ public class JuegoCurioso extends Application {
         imagenesJuegoList = new ArrayList<>();
         Collections.addAll(imagenesJuegoList,
                 "com/sebaescu/losconejosdefibonacci/Juego1.png",
-                "com/sebaescu/losconejosdefibonacci/Juego1B.png",
+                
                 "com/sebaescu/losconejosdefibonacci/Juego2.png",
-                "com/sebaescu/losconejosdefibonacci/Juego2B.png",
+               
                 "com/sebaescu/losconejosdefibonacci/Juego3.png",
-                "com/sebaescu/losconejosdefibonacci/Juego3B.png",
+               
                 "com/sebaescu/losconejosdefibonacci/Juego4.png",
-                "com/sebaescu/losconejosdefibonacci/Juego4B.png",
+                
                 "com/sebaescu/losconejosdefibonacci/Juego5.png",
                 "com/sebaescu/losconejosdefibonacci/Juego6.png",
                 "com/sebaescu/losconejosdefibonacci/Juego7.png",
                 "com/sebaescu/losconejosdefibonacci/Juego8.png",
                 "com/sebaescu/losconejosdefibonacci/Juego9.png",
                 "com/sebaescu/losconejosdefibonacci/Juego10.png");
-        Collections.shuffle(imagenesJuegoList);
+        
 
         // Pregunta
         labelPregunta = new Label("¿Contiene esta imagen la secuencia de Fibonacci?");
@@ -138,6 +138,7 @@ public class JuegoCurioso extends Application {
             String respuestaSeleccionada = selectedRadioButton.getText();
 
             if (respuestaCorrecta.equals(respuestaSeleccionada)) {
+                System.out.println("correcto");
                 nCorrectas++;
             }
             if (currentIndex == 10) {
@@ -155,11 +156,14 @@ public class JuegoCurioso extends Application {
     private String getRespuestaCorrecta() {
         String imagePath = imageView.getImage().getUrl();
         System.out.println(imagePath);
-        switch (imagePath) {
-            case "com/sebaescu/losconejosdefibonacci/Juego1.png":
-            case "com/sebaescu/losconejosdefibonacci/Juego4.png":
-            case "com/sebaescu/losconejosdefibonacci/Juego8.png":
-            case "com/sebaescu/losconejosdefibonacci/Juego10.png":
+        switch (currentIndex) {
+            case 1:
+                return "Sí";
+            case 4:
+                return "Sí";
+            case 8:
+                return "Sí";
+            case 10:
                 return "Sí";
             default:
                 return "No";

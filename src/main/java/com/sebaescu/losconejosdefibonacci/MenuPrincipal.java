@@ -31,7 +31,8 @@ public class MenuPrincipal extends Application {
         Image backgroundImage = new Image("com/sebaescu/losconejosdefibonacci/fondo.png");
         ImageView backgroundImageView = new ImageView(backgroundImage);
         root.getChildren().add(backgroundImageView);
-
+        Image icon = new Image("com/sebaescu/losconejosdefibonacci/logo.png");
+        primaryStage.getIcons().add(icon);
         Label title = new Label("Los Conejos de Fibonacci");
         title.setStyle("-fx-font-weight: bold; -fx-font-size: 36; -fx-text-fill: #776c5a;");
 

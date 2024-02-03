@@ -1,8 +1,6 @@
 package com.sebaescu.losconejosdefibonacci;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,15 +9,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
@@ -52,43 +47,26 @@ public class App extends Application {
             MenuPrincipal menuPrincipal = new MenuPrincipal();
             menuPrincipal.start(primaryStage);
         }
-        public void startJuego(Stage primaryStage){
+        public void startJuego(Stage primaryStage) {
         primaryStage.setTitle("Los Conejos de Fibonacci");
-        primaryStage.setMaximized(true);  // Abrir la ventana maximizada
-        
+        primaryStage.setMaximized(true);
+
         siguienteButton = new Button("Siguiente");
-        siguienteButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                siguiente();
-            }
-        });
+        siguienteButton.setOnAction(event -> siguiente());
 
         reiniciarButton = new Button("Reiniciar");
-        reiniciarButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                reiniciar();
-            }
-        });
-        // Botón para generar conejos según la entrada del usuario
+        reiniciarButton.setOnAction(event -> reiniciar());
+
         Button generarButton = new Button("Generar Conejos");
-        generarButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                generarConejosSegunInput();
-                userInput.clear();
-                userInput.setPromptText("Ingrese un número (1-10)");
-            }
+        generarButton.setOnAction(event -> {
+            generarConejosSegunInput();
+            userInput.clear();
+            userInput.setPromptText("Ingrese un número (1-10)");
         });
+
         Button salirButton = new Button("Salir");
-        salirButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                volverAlMenu();
-                
-            }
-        });
+        salirButton.setOnAction(event -> volverAlMenu());
+
         siguienteButton.setStyle("-fx-min-height: 70; -fx-background-color: #dad061; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
         reiniciarButton.setStyle("-fx-min-height: 70; -fx-background-color: #f5ebb0; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
         generarButton.setStyle("-fx-min-height: 70; -fx-background-color: #acc59d; -fx-font-size: 24; -fx-text-fill: #2d6073; -fx-background-radius: 30;");
@@ -107,18 +85,20 @@ public class App extends Application {
         numeroConejosLabel.setStyle("-fx-font-size: 36; -fx-text-fill: #2d6073;");
         nSucesion.setStyle("-fx-font-size: 36; -fx-text-fill: #2d6073;");
 
-        botonesBox.getChildren().addAll(siguienteButton, reiniciarButton, numeroConejosLabel,nSucesion,userInput,generarButton,salirButton);
+        botonesBox.getChildren().addAll(siguienteButton, reiniciarButton, numeroConejosLabel, nSucesion, userInput, generarButton, salirButton);
 
         scrollPane = new ScrollPane();
-        imagenesVBox.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
-        filaActual.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
+        imagenesVBox.setStyle("-fx-background-color: transparent;");
+        filaActual.setStyle("-fx-background-color: #b0da09;");
 
         scrollPane.setContent(imagenesVBox);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
+        scrollPane.setStyle("-fx-background-color: #b0da09;");
+
         VBox contenidoVBox = new VBox();
         contenidoVBox.setAlignment(Pos.CENTER);
+        contenidoVBox.setStyle("-fx-background-color: transparent;");
         contenidoVBox.getChildren().addAll(scrollPane, botonesBox);
         StackPane stackPane = new StackPane();
         Image fondo = new Image("com/sebaescu/losconejosdefibonacci/Granja.png");
@@ -126,15 +106,19 @@ public class App extends Application {
         fondoImageView.setPreserveRatio(true);
         fondoImageView.setFitWidth(primaryStage.getWidth());
         fondoImageView.setFitHeight(primaryStage.getHeight());
-        stackPane.getChildren().addAll(fondoImageView, contenidoVBox);
+
+        // Agregar primero el contenidoVBox y luego el fondo
+        stackPane.getChildren().addAll(fondoImageView,contenidoVBox);
 
         // Establecer el fondo de StackPane como transparente
-        stackPane.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+        stackPane.setStyle("-fx-background-image: url('com/sebaescu/losconejosdefibonacci/Granja.png'); "
+                + "-fx-background-size: cover;");
         root = new VBox(10);
         root.setAlignment(Pos.CENTER);
         root.getChildren().add(stackPane);
-        root.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+        root.setStyle("-fx-background-color: #b0da09;");
         Scene scene = new Scene(root);
+
         primaryStage.setScene(scene);
 
         primaryStage.show();
@@ -146,27 +130,31 @@ public class App extends Application {
                 fondoImageView.setFitHeight((double) newVal));
     }
 
+
     private void inicializarConejos() {
-        imagenesVBox = new VBox(10);
+        imagenesVBox = new VBox();
         imagenesVBox.setAlignment(Pos.CENTER);
 
         // Establecer el fondo de VBox como transparente
-        imagenesVBox.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
+        imagenesVBox.setStyle("-fx-background-color: transparent;");
 
         filaActual = new HBox(10);
         filaActual.setAlignment(Pos.CENTER);
 
-        // Establecer el fondo de HBox como transparente
-        filaActual.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
-
+        filaActual.setStyle("-fx-background-color: #b0da09;");
         Random random = new Random();
         String rutaAleatoria = conejosImagenes.get(random.nextInt(conejosImagenes.size()));
         conejoImageViews.add(new ImageView(new Image(rutaAleatoria)));
         conejoImageViews.get(0).setFitWidth(150);
         conejoImageViews.get(0).setFitHeight(150);
+        // Establecer el fondo del HBox interno como transparente
+        conejoImageViews.get(0).setStyle("-fx-background-color: #b0da09;");
+
         filaActual.getChildren().add(conejoImageViews.get(0));
         imagenesVBox.getChildren().add(filaActual);
     }
+
+
 
     private void siguiente() {
         index++;
@@ -184,7 +172,7 @@ public class App extends Application {
             // Establecer el fondo de HBox como transparente
             HBox nuevoHBox = new HBox(10);
             nuevoHBox.setAlignment(Pos.CENTER);
-            nuevoHBox.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
+            nuevoHBox.setStyle("-fx-background-color: transparent;");
             nuevoHBox.getChildren().add(nuevoConejo);
 
             filaActual.getChildren().add(nuevoHBox);
@@ -192,8 +180,7 @@ public class App extends Application {
             if (filaActual.getChildren().size() >= 10) {
                 filaActual = new HBox(10);
                 filaActual.setAlignment(Pos.CENTER);
-                // Establecer el fondo de HBox como transparente
-                filaActual.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+                filaActual.setStyle("-fx-background-color: #b0da09;");
                 imagenesVBox.getChildren().add(filaActual);
             }
         }
@@ -207,8 +194,7 @@ public class App extends Application {
         filaActual = new HBox(10);
         filaActual.setAlignment(Pos.CENTER);
 
-        // Establecer el fondo de HBox como transparente
-        filaActual.setStyle("-fx-background-color: transparent; -fx-control-inner-background: transparent;");
+        filaActual.setStyle("-fx-background-color: #b0da09;");
 
         Random random = new Random();
         String rutaAleatoria = conejosImagenes.get(random.nextInt(conejosImagenes.size()));
